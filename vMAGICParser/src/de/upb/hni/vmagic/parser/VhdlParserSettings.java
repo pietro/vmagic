@@ -19,7 +19,6 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.parser;
 
 import de.upb.hni.vmagic.parser.annotation.PositionInformation;
@@ -33,12 +32,14 @@ public class VhdlParserSettings {
     private boolean printErrors;
     private boolean emitResolveErrors;
     private boolean addPositionInformation;
+    private boolean parseComments;
 
     public VhdlParserSettings() {
         printErrors = true;
         createDummyObjects = true;
         emitResolveErrors = false;
         addPositionInformation = false;
+        parseComments = false;
     }
 
     /**
@@ -107,5 +108,23 @@ public class VhdlParserSettings {
      */
     public void setPrintErrors(boolean printErrors) {
         this.printErrors = printErrors;
+    }
+
+    /**
+     * Returns if comments in the input file are added as annotations to the
+     * meta classes.
+     * @return <code>true</code>, if comments are parsed
+     */
+    public boolean isParseComments() {
+        return parseComments;
+    }
+
+    /**
+     * Sets if comments in the input file should be added as annotations to the
+     * meta classes.
+     * @param parseComments <code>true</code>, if comments should be parsed
+     */
+    public void setParseComments(boolean parseComments) {
+        this.parseComments = parseComments;
     }
 }

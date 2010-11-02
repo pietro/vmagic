@@ -19,10 +19,8 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.parser;
 
-import de.upb.hni.vmagic.parser.annotation.Tags;
 import de.upb.hni.vmagic.Annotations;
 import de.upb.hni.vmagic.LibraryDeclarativeRegion;
 import de.upb.hni.vmagic.RootDeclarativeRegion;
@@ -36,7 +34,6 @@ import de.upb.hni.vmagic.parser.antlr.VhdlAntlrLexer;
 import de.upb.hni.vmagic.parser.antlr.VhdlAntlrParser;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.antlr.runtime.CharStream;
@@ -65,8 +62,6 @@ public class VhdlParser {
             throws VhdlParserException {
         VhdlAntlrLexer lexer = new VhdlAntlrLexer(stream);
         CommonTokenStream ts = new CommonTokenStream(lexer);
-
-        List<String> tags = parseFileTags(ts);
 
         VhdlAntlrParser parser = new VhdlAntlrParser(ts);
         parser.setTreeAdaptor(new TreeAdaptorWithoutErrorNodes());
@@ -98,10 +93,6 @@ public class VhdlParser {
             }
         }
 
-        if (!tags.isEmpty()) {
-            Annotations.putAnnotation(file, Tags.class, new Tags(tags));
-        }
-
         return file;
     }
 
@@ -122,7 +113,7 @@ public class VhdlParser {
         return parse(settings, new CaseInsensitiveFileStream(fileName));
     }
 
-     public static VhdlFile parseFile(String fileName, VhdlParserSettings settings, RootDeclarativeRegion rootScope, LibraryDeclarativeRegion libray)
+    public static VhdlFile parseFile(String fileName, VhdlParserSettings settings, RootDeclarativeRegion rootScope, LibraryDeclarativeRegion libray)
             throws IOException, VhdlParserException {
         return parse(settings, new CaseInsensitiveFileStream(fileName), rootScope, libray);
     }
@@ -160,36 +151,6 @@ public class VhdlParser {
             return Collections.emptyList();
         } else {
             return errors.getErrors();
-        }
-    }
-
-    private static List<String> parseFileTags(TokenStream tokens) {
-        List<String> tags = new ArrayList<String>();
-
-        //fill token buffer
-        tokens.LT(1);
-
-        if (tokens.size() == 0) {
-            return tags;
-        }
-
-        int i = 0;
-        while (true) {
-            Token t = tokens.get(i++);
-            switch (t.getChannel()) {
-                case VhdlAntlrLexer.HIDDEN:
-                case VhdlAntlrLexer.CHANNEL_COMMENT:
-                    break;
-
-                case VhdlAntlrLexer.CHANNEL_TAG:
-                    //strip "--*"
-                    String text = t.getText().substring(3);
-                    tags.add(text);
-                    break;
-
-                default:
-                    return tags;
-            }
         }
     }
 

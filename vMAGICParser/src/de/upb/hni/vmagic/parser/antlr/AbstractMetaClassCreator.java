@@ -19,7 +19,6 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.parser.antlr;
 
 import de.upb.hni.vmagic.Annotations;
@@ -31,8 +30,10 @@ import de.upb.hni.vmagic.parser.VhdlParserSettings;
 import de.upb.hni.vmagic.parser.ParseError;
 import de.upb.hni.vmagic.parser.annotation.PositionInformation;
 import de.upb.hni.vmagic.parser.annotation.SourcePosition;
+import de.upb.hni.vmagic.util.Comments;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.RecognizerSharedState;
@@ -55,7 +56,7 @@ class AbstractMetaClassCreator extends TreeParser {
     protected final RootDeclarativeRegion rootScope;
 
     public AbstractMetaClassCreator(TreeNodeStream input, RecognizerSharedState state) {
-        super(input,state);
+        super(input, state);
         throw new IllegalStateException("Don't call the default ANTLR constructors");
     }
 
@@ -115,6 +116,25 @@ class AbstractMetaClassCreator extends TreeParser {
         Annotations.putAnnotation(element, PositionInformation.class, info);
     }
 
+    private void addCommentAnnotation(VhdlElement element, CommonTree tree) {
+        LinkedList<String> comments = new LinkedList<String>();
+
+        for (int i = tree.getTokenStartIndex() - 1; i >= 0; i--) {
+            Token t = input.getTokenStream().get(i);
+
+            if (t.getChannel() == VhdlAntlrLexer.CHANNEL_COMMENT) {
+                String text = t.getText().substring(2); //strip leading "--"
+                comments.addFirst(text);
+            } else if (t.getChannel() != VhdlAntlrLexer.HIDDEN) {
+                break;
+            }
+        }
+
+        if (!comments.isEmpty()) {
+            Comments.setComments(element, comments);
+        }
+    }
+
     protected void addAnnotations(VhdlElement element, CommonTree tree) {
         if (element == null || tree == null) {
             return;
@@ -122,6 +142,10 @@ class AbstractMetaClassCreator extends TreeParser {
 
         if (settings.isAddPositionInformation()) {
             addPositionAnnotation(element, tree);
+        }
+
+        if (settings.isParseComments()) {
+            addCommentAnnotation(element, tree);
         }
     }
 }

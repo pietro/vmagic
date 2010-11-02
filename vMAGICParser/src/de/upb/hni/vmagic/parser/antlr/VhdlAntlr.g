@@ -250,8 +250,7 @@ tokens {
 //-------------------------------------------------------------------
 
 @lexer::members {
-    public static final int CHANNEL_TAG = 80;
-    public static final int CHANNEL_COMMENT = 81;
+    public static final int CHANNEL_COMMENT = 80;
 }
 
 //-------------------------------------------------------------------
@@ -1744,10 +1743,6 @@ waveform_element
 
 WHITESPACE
     :   ( '\t' | ' ' | '\n' | '\r' )+ { $channel = HIDDEN; }
-    ;
-
-TAG_COMMENT
-    :   '--*' ( ~( '\n' | '\r' ) )* { $channel = CHANNEL_TAG; }
     ;
 
 COMMENT
