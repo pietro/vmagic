@@ -952,6 +952,9 @@ interface_signal_declaration returns [SignalGroup value]
     boolean hasMode = false;
     boolean isBus = false;
 }
+@after {
+    addAnnotations($value, $start);
+}
     :   ^( INTERFACE_SIGNAL_DECLARATION
             ( SIGNAL { hasObjectClass = true; } )?
             identifier_list

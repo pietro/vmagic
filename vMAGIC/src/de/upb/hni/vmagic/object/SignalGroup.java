@@ -31,7 +31,7 @@ import java.util.List;
  * Group of signals.
  */
 //TODO: check for equal types
-public class SignalGroup implements VhdlObjectGroup<Signal> {
+public class SignalGroup extends VhdlObjectGroup<Signal> {
 
     private final List<Signal> signals;
 

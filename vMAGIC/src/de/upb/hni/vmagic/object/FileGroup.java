@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * File group.
  */
-public class FileGroup implements VhdlObjectGroup<FileObject> {
+public class FileGroup extends VhdlObjectGroup<FileObject> {
 
     private final List<FileObject> files;
 

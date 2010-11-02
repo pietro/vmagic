@@ -31,7 +31,7 @@ import java.util.List;
  * Group of constants.
  */
 //TODO: check for equal types
-public class ConstantGroup implements VhdlObjectGroup<Constant> {
+public class ConstantGroup extends VhdlObjectGroup<Constant> {
 
     private final List<Constant> constants;
 

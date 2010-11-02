@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Variable group.
  */
-public class VariableGroup implements VhdlObjectGroup<Variable> {
+public class VariableGroup extends VhdlObjectGroup<Variable> {
 
     private final List<Variable> variables;
 

@@ -37,6 +37,7 @@ import de.upb.hni.vmagic.declaration.Subtype;
 import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.object.Constant;
 import de.upb.hni.vmagic.object.Signal;
+import de.upb.hni.vmagic.object.VhdlObjectGroup;
 import de.upb.hni.vmagic.object.VhdlObjectProvider;
 import de.upb.hni.vmagic.type.IndexSubtypeIndication;
 import de.upb.hni.vmagic.type.RangeSubtypeIndication;
@@ -97,6 +98,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
                     writer.append(' ');
                 }
             }
+            VhdlOutputHelper.handleAnnotations(element, writer);
             associationElement(element);
         }
         if (addLineBreaks) {
@@ -113,6 +115,11 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
                 first = false;
             } else {
                 writer.append(";").newLine();
+            }
+
+            if (objectProvider instanceof VhdlObjectGroup) {
+                VhdlObjectGroup group = (VhdlObjectGroup) objectProvider;
+                VhdlOutputHelper.handleAnnotations(group, writer);
             }
 
             //TODO: check for equal types etc.

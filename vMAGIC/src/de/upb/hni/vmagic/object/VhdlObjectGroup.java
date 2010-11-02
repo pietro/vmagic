@@ -22,6 +22,7 @@
 
 package de.upb.hni.vmagic.object;
 
+import de.upb.hni.vmagic.VhdlElement;
 import de.upb.hni.vmagic.expression.VhdlObject;
 import java.util.List;
 
@@ -29,11 +30,12 @@ import java.util.List;
  * VhdlObjectGroup of <code>VhdlElement</code>s.
  * @param <E> the object type
  */
-public interface VhdlObjectGroup<E extends VhdlObject> extends VhdlObjectProvider<E> {
+public abstract class VhdlObjectGroup<E extends VhdlObject> extends VhdlElement
+        implements VhdlObjectProvider<E> {
 
     /**
      * Returns the elements in this group.
      * @return a list of objects
      */
-    public List<E> getElements();
+    public abstract List<E> getElements();
 }
