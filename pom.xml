@@ -1,0 +1,24 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>de.upb.hni.vmagic</groupId>
+    <artifactId>vmagic-root</artifactId>
+    <packaging>pom</packaging>
+    <version>0.4-SNAPSHOT</version>
+    <url>http://wwwhni.uni-paderborn.de/sct/extern/vmagic/</url>
+    <name>vMAGIC root project</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+    	<module>vmagic</module>
+    	<module>vmagic-parser</module>
+    </modules>
+
+    <scm>
+        <connection>scm:git:git://vmagic.git.sourceforge.net/gitroot/vmagic/vMAGIC</connection>
+        <developerConnection>scm:git:ssh://vmagic.git.sourceforge.net/gitroot/vmagic/vMAGIC</developerConnection>
+    </scm>
+</project>
