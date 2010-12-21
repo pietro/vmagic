@@ -233,11 +233,11 @@ block_specification returns [AbstractBlockConfiguration value]
         }
     ;
 
+//annotations handled in concurrent_statement
 block_statement[String label] returns [BlockStatement value]
 @init { DeclarativeRegion oldScope = currentScope; }
 @after {
     currentScope = oldScope;
-    addAnnotations($value, $start);
 }
     :   ^( BLOCK_STATEMENT
             {
@@ -322,8 +322,8 @@ component_declaration returns [Component value]
         )
     ;
 
+//annotations handled in concurrent_statement
 component_instantiation_statement[String label] returns [AbstractComponentInstantiation value]
-@after { addAnnotations($value, $start); }
     :   ^( COMPONENT_INSTANTIATION_STATEMENT
             instantiated_unit[label] { $value = $instantiated_unit.value; }
             ( gma=generic_map_aspect { $value.getGenericMap().addAll($gma.value); } )?
@@ -346,8 +346,8 @@ component_specification returns [ComponentSpecification value]
         { $value = ComponentSpecification.createAll($comp3.value.toComponent(currentScope)); }
     ;
 
+//annotations handled in concurrent_statement & entity_statement
 concurrent_assertion_statement[String label] returns [ConcurrentAssertionStatement value]
-@after { addAnnotations($value, $start); }
     :   ^( ASSERT
             condition=expression
             {
@@ -359,8 +359,8 @@ concurrent_assertion_statement[String label] returns [ConcurrentAssertionStateme
         )
     ;
 
+//annotations handled in concurrent_statement & entity_statement
 concurrent_procedure_call_statement[String label] returns [ConcurrentProcedureCall value]
-@after { addAnnotations($value, $start); }
     :   ^( PROCEDURE_CALL
             name
             {
@@ -374,6 +374,7 @@ concurrent_procedure_call_statement[String label] returns [ConcurrentProcedureCa
         )
     ;
 
+//annotations handled in concurrent_statement
 concurrent_signal_assignment_statement[String label] returns [AbstractPostponableConcurrentStatement value]
     :   ^( CONDITIONAL_SIGNAL_ASSIGNMENT_STATEMENT csa=conditional_signal_assignment )
         {
@@ -387,11 +388,11 @@ concurrent_signal_assignment_statement[String label] returns [AbstractPostponabl
         }
     ;
 
+//annotations handled in concurrent_statement
 conditional_signal_assignment returns [ConditionalSignalAssignment value]
 @init {
     boolean isGuarded = false;
 }
-@after { addAnnotations($value, $start); }
     :   ts=target_signal ( GUARDED { isGuarded = true; } )?
         delay_mechanism? cw=conditional_waveforms
         {
@@ -402,6 +403,7 @@ conditional_signal_assignment returns [ConditionalSignalAssignment value]
     ;
 
 concurrent_statement returns [ConcurrentStatement value]
+@after { addAnnotations($value, $start); }
     :   ^( LABEL_STATEMENT identifier
             (
                     s1=concurrent_statement_optional_label[$identifier.text]
@@ -679,6 +681,7 @@ entity_name_list returns [AttributeSpecification.EntityNameList value]
 
 entity_statement returns [EntityStatement value]
 @init { boolean isPostponed = false; }
+@after { addAnnotations($value, $start); }
     :   ^( ENTITY_STATEMENT identifier? ( POSTPONED { isPostponed = true; } )?
             (
                     cas=concurrent_assertion_statement[$identifier.text]
@@ -761,11 +764,11 @@ file_type_definition[String ident] returns [FileType value]
         { $value = new FileType($ident, $type_mark.value.toTypeMark(currentScope)); }
     ;
 
+//annotations handled in concurrent_statement
 generate_statement[String label] returns [AbstractGenerateStatement value]
 @init { DeclarativeRegion oldScope = currentScope; }
 @after {
     currentScope = oldScope;
-    addAnnotations($value, $start);
 }
     :   ^( GENERATE
             generation_scheme[label]
@@ -1336,6 +1339,7 @@ process_declarative_item returns [ProcessDeclarativeItem value]
     |   group_declaration          { $value = $group_declaration.value; }
     ;
 
+//annotations handled in concurrent_statement & entity_statement
 process_statement[String label] returns [ProcessStatement value]
 @init {
     $value = new ProcessStatement($label);
@@ -1346,7 +1350,6 @@ process_statement[String label] returns [ProcessStatement value]
 }
 @after {
     currentScope = oldScope;
-    addAnnotations($value, $start);
 }
     :   ^( PROCESS
             ( sl=sensitivity_list { $value.getSensitivityList().addAll($sl.value); } )?
@@ -1430,9 +1433,9 @@ return_statement[String label] returns [ReturnStatement value = new ReturnStatem
         )
     ;
 
+//annotations handled in concurrent_statement
 selected_signal_assignment returns [SelectedSignalAssignment value]
 @init { boolean isGuarded; }
-@after { addAnnotations($value, $start); }
     :   expression target_signal
         { $value = new SelectedSignalAssignment($expression.value, $target_signal.value); }
         ( GUARDED { $value.setGuarded(true); } )?
