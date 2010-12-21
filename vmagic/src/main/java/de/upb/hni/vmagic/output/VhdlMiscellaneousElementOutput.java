@@ -60,6 +60,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         this.output = output;
     }
 
+    @Override
     public void delayMechanism(DelayMechanism delayMechanism) {
         if (delayMechanism == DelayMechanism.INERTIAL) {
             writer.append(Keyword.INERTIAL);
@@ -157,38 +158,46 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         writer.newLine().endAlign();
     }
 
+    @Override
     public void generic(List<VhdlObjectProvider<Constant>> generic) {
         writer.append(Keyword.GENERIC).append(" (").newLine().indent();
         writeInterfaceList(generic, true);
         writer.dedent().append(");").newLine();
     }
 
+    @Override
     public void port(List<VhdlObjectProvider<Signal>> port) {
         writer.append(Keyword.PORT).append(" (").newLine().indent();
         writeInterfaceList(port, true);
         writer.dedent().append(");").newLine();
     }
 
+    @Override
     public void genericMap(List<AssociationElement> genericMap) {
         associationList(genericMap, true);
     }
 
+    @Override
     public void portMap(List<AssociationElement> genericMap) {
         associationList(genericMap, true);
     }
 
+    @Override
     public void procedureCallParameters(List<AssociationElement> parameters) {
         associationList(parameters, false);
     }
 
+    @Override
     public void concurrentProcedureCallParameters(List<AssociationElement> parameters) {
         associationList(parameters, false);
     }
 
+    @Override
     public void functionCallParameters(List<AssociationElement> parameters) {
         associationList(parameters, false);
     }
 
+    @Override
     public void signature(Signature signature) {
         writer.append('[');
 
@@ -213,6 +222,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         writer.append(']');
     }
 
+    @Override
     public void waveform(List<WaveformElement> waveform) {
         if (waveform.isEmpty()) {
             writer.append(Keyword.UNAFFECTED);
@@ -234,6 +244,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         }
     }
 
+    @Override
     public void range(Range range) {
         output.writeExpression(range.getFrom());
         writer.append(' ');
@@ -250,6 +261,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         output.writeExpression(range.getTo());
     }
 
+    @Override
     public void rangeAttributeName(RangeAttributeName range) {
         writer.append(range.getPrefix()).append('\'').append(range.getType());
         if (range.getIndex() != null) {
@@ -259,14 +271,17 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         }
     }
 
+    @Override
     public void subtypeDiscreteRange(SubtypeDiscreteRange range) {
         output.writeSubtypeIndication(range.getSubtypeIndication());
     }
 
+    @Override
     public void choiceOthers() {
         writer.append(Keyword.OTHERS);
     }
 
+    @Override
     public void indexSubtypeIndication(IndexSubtypeIndication indication) {
         if (indication.getBaseType() != null) {
             output.writeSubtypeIndication(indication.getBaseType());
@@ -286,6 +301,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         writer.append(')');
     }
 
+    @Override
     public void rangeSubtypeIndication(RangeSubtypeIndication indication) {
         if (indication.getBaseType() != null) {
             output.writeSubtypeIndication(indication.getBaseType());
@@ -296,6 +312,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         output.writeDiscreteRange(indication.getRange());
     }
 
+    @Override
     public void resolvedSubtypeIndication(ResolvedSubtypeIndication indication) {
         writer.append(indication.getResolutionFunction()).append(' ');
         if (indication.getBaseType() != null) {
@@ -305,28 +322,34 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         }
     }
 
+    @Override
     public void subtypeSubtypeIndication(Subtype subtype) {
         writer.appendIdentifier(subtype);
     }
 
+    @Override
     public void typeSubtypeIndication(Type subtype) {
         writer.appendIdentifier(subtype);
     }
 
+    @Override
     public void unresolvedTypeSubtypeIndication(UnresolvedType subtype) {
         writer.appendIdentifier(subtype);
     }
 
+    @Override
     public void allComponentSpecification(ComponentSpecification specification) {
         writer.append(Keyword.ALL).append(" : ");
         writer.appendIdentifier(specification.getComponent());
     }
 
+    @Override
     public void othersComponentSpecification(ComponentSpecification specification) {
         writer.append(Keyword.OTHERS).append(" : ");
         writer.appendIdentifier(specification.getComponent());
     }
 
+    @Override
     public void instantiationListComponentSpecification(ComponentSpecification specification) {
         writer.appendStrings(specification.getLabels(), ", ");
         writer.append(" : ").appendIdentifier(specification.getComponent());

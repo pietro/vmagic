@@ -908,6 +908,9 @@ interface_constant_declaration returns [ConstantGroup value]
     boolean hasObjectClass = false;
     boolean hasMode = false;
 }
+@after {
+    addAnnotations($value, $start);
+}
     :   ^( INTERFACE_CONSTANT_DECLARATION
             ( CONSTANT { hasObjectClass = true; } )?
             identifier_list
