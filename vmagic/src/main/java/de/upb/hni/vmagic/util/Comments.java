@@ -19,12 +19,12 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.util;
 
 import de.upb.hni.vmagic.Annotations;
 import de.upb.hni.vmagic.VhdlElement;
-import de.upb.hni.vmagic.annotation.CommentAnnotation;
+import de.upb.hni.vmagic.annotation.CommentAnnotationAfter;
+import de.upb.hni.vmagic.annotation.CommentAnnotationBefore;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -38,12 +38,12 @@ public class Comments {
     }
 
     /**
-     * Returns the comments in front of the given vhdl element.
+     * Returns the comments before the given vhdl element.
      * @param element the vhdl element
      * @return a list of line comments
      */
     public static List<String> getComments(VhdlElement element) {
-        CommentAnnotation annotation = Annotations.getAnnotation(element, CommentAnnotation.class);
+        CommentAnnotationBefore annotation = Annotations.getAnnotation(element, CommentAnnotationBefore.class);
         if (annotation == null) {
             return Collections.emptyList();
         } else {
@@ -52,21 +52,54 @@ public class Comments {
     }
 
     /**
-     * Sets the comments in front of a vhdl element.
+     * Returns the comments after the given vhdl element.
+     * @param element the vhdl element
+     * @return a list of line comments
+     */
+    public static List<String> getCommentsAfter(VhdlElement element) {
+        CommentAnnotationAfter annotation = Annotations.getAnnotation(element, CommentAnnotationAfter.class);
+        if (annotation == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.unmodifiableList(annotation.getComments());
+        }
+    }
+
+    /**
+     * Sets the comments before a vhdl element.
      * @param element the vhdl element
      * @param comments a list of line comments
      */
     public static void setComments(VhdlElement element, List<String> comments) {
-        CommentAnnotation annotation = new CommentAnnotation(comments);
-        Annotations.putAnnotation(element, CommentAnnotation.class, annotation);
+        CommentAnnotationBefore annotation = new CommentAnnotationBefore(comments);
+        Annotations.putAnnotation(element, CommentAnnotationBefore.class, annotation);
     }
 
     /**
-     * Sets the comments in front of the vhdl element.
+     * Sets the comments before a vhdl element.
      * @param element the vhdl element
      * @param comments zero or more line comments
      */
     public static void setComments(VhdlElement element, String... comments) {
+        setComments(element, Arrays.asList(comments));
+    }
+
+    /**
+     * Sets the comments after a vhdl element.
+     * @param element the vhdl element
+     * @param comments a list of line comments
+     */
+    public static void setCommentsAfter(VhdlElement element, List<String> comments) {
+        CommentAnnotationAfter annotation = new CommentAnnotationAfter(comments);
+        Annotations.putAnnotation(element, CommentAnnotationAfter.class, annotation);
+    }
+
+    /**
+     * Sets the comments after a vhdl element.
+     * @param element the vhdl element
+     * @param comments zero or more line comments
+     */
+    public static void setCommentsAfter(VhdlElement element, String... comments) {
         setComments(element, Arrays.asList(comments));
     }
 }

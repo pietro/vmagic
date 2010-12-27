@@ -67,8 +67,9 @@ class VhdlDeclarationVisitor extends DeclarationVisitor {
 
     @Override
     public void visit(DeclarativeItem declaration) {
-        VhdlOutputHelper.handleAnnotations(declaration, writer);
+        VhdlOutputHelper.handleAnnotationsBefore(declaration, writer);
         super.visit(declaration);
+        VhdlOutputHelper.handleAnnotationsAfter(declaration, writer);
     }
 
     @Override

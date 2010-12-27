@@ -60,8 +60,9 @@ class VhdlSequentialStatementVisitor extends SequentialStatementVisitor {
 
     @Override
     public void visit(SequentialStatement statement) {
-        VhdlOutputHelper.handleAnnotations(statement, writer);
+        VhdlOutputHelper.handleAnnotationsBefore(statement, writer);
         super.visit(statement);
+        VhdlOutputHelper.handleAnnotationsAfter(statement, writer);
     }
 
     @Override

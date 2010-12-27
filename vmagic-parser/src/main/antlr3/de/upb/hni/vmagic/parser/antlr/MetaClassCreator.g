@@ -141,7 +141,9 @@ architecture_body returns [Architecture value]
                 currentScope = $value;
             }
             ( d=block_declarative_item { $value.getDeclarations().add($d.value); } )*
+            { addListEndComments($d.value, $d.start); }
             ( s=concurrent_statement { $value.getStatements().add($s.value); } )*
+            { addListEndComments($s.value, $s.start); }
         )
     ;
 
@@ -258,7 +260,9 @@ block_statement[String label] returns [BlockStatement value]
             ( pc=port_clause { $value.getPort().addAll($pc.value); } )?
             ( pma=port_map_aspect { $value.getPortMap().addAll($pma.value); } )?
             ( bdi=block_declarative_item { $value.getDeclarations().add($bdi.value); } )*
+            { addListEndComments($bdi.value, $bdi.start); }
             ( cs=concurrent_statement { $value.getStatements().add($cs.value); } )*
+            { addListEndComments($cs.value, $cs.start); }
         )
     ;
 
@@ -461,6 +465,7 @@ configuration_declaration returns [Configuration value]
 @after { addAnnotations($value, $start); }
     :   ^( CONFIGURATION identifier entity=name
             ( cdi=configuration_declarative_item { declarations.add($cdi.value); } )*
+            { addListEndComments($cdi.value, $cdi.start); }
             bc=block_configuration
             {
                 $value = new Configuration($identifier.text, $entity.value.toEntity(currentScope), $bc.value);
@@ -642,7 +647,9 @@ entity_declaration returns [Entity value]
             ( gc=generic_clause { $value.getGeneric().addAll($gc.value); } )?
             ( pc=port_clause { $value.getPort().addAll($pc.value); } )?
             ( edi=entity_declarative_item { $value.getDeclarations().add($edi.value); } )*
+            { addListEndComments($edi.value, $edi.start); }
             ( es=entity_statement { $value.getStatements().add($es.value); } )*
+            { addListEndComments($es.value, $es.start); }
         )
     ;
 
@@ -778,7 +785,9 @@ generate_statement[String label] returns [AbstractGenerateStatement value]
                 currentScope = $value;
             }
             ( bdi=block_declarative_item { $value.getDeclarations().add($bdi.value); } )*
+            { addListEndComments($bdi.value, $bdi.start); }
             ( cs=concurrent_statement { $value.getStatements().add($cs.value); } )*
+            { addListEndComments($cs.value, $cs.start); }
         )
     ;
 
@@ -793,6 +802,7 @@ generic_clause returns [List<VhdlObjectProvider<Constant>> value]
 @init { $value = new ArrayList<VhdlObjectProvider<Constant>>(); }
     :   ^( GENERIC
             ( icd=interface_constant_declaration { $value.add($icd.value); } )+
+            { addListEndComments($icd.value, $icd.start); }
         )
     ;
 
@@ -849,16 +859,19 @@ if_statement[String label] returns [IfStatement value]
                 $value.setLabel($label);
             }
             ( ss1=sequential_statement { $value.getStatements().add($ss1.value); } )*
+            { addListEndComments($ss1.value, $ss1.start); }
             (
                 ^( ELSIF
                     c2=expression
                     { IfStatement.ElsifPart part = $value.createElsifPart($c2.value); }
                     ( ss2=sequential_statement { part.getStatements().add($ss2.value); } )*
+                    { addListEndComments($ss2.value, $ss2.start); }
                 )
             )*
             (
                 ^( ELSE
                     ( ss3=sequential_statement { $value.getElseStatements().add($ss3.value); } )*
+                    { addListEndComments($ss3.value, $ss3.start); }
                 )
             )?
         )
@@ -1066,6 +1079,7 @@ loop_statement[String label] returns [LoopStatement value]
                 currentScope = $value;
             }
             ( ss=sequential_statement { $value.getStatements().add($ss.value); } )*
+            { addListEndComments($ss.value, $ss.start); }
         )
     ;
 
@@ -1181,6 +1195,7 @@ package_body returns [PackageBody value]
                 currentScope = $value;
             }
             ( pbdi=package_body_declarative_item { $value.getDeclarations().add($pbdi.value); } )*
+            { addListEndComments($pbdi.value, $pbdi.start); }
         )
     ;
 
@@ -1212,6 +1227,7 @@ package_declaration returns [PackageDeclaration value]
                 currentScope = $value;
             }
             ( pdi=package_declarative_item { $value.getDeclarations().add($pdi.value); } )*
+            { addListEndComments($pdi.value, $pdi.start); }
         )
     ;
 
@@ -1255,6 +1271,7 @@ port_clause returns [List<VhdlObjectProvider<Signal>> value]
 @init { $value = new ArrayList<VhdlObjectProvider<Signal>>(); }
     :   ^( PORT
             ( isd=interface_signal_declaration { $value.add($isd.value); } )+
+            { addListEndComments($isd.value, $isd.start); }
         )
     ;
 
@@ -1361,7 +1378,9 @@ process_statement[String label] returns [ProcessStatement value]
                 }
             )?
             ( pdi=process_declarative_item { $value.getDeclarations().add($pdi.value); } )*
+            { addListEndComments($pdi.value, $pdi.start); }
             ( ss=sequential_statement { $value.getStatements().add($ss.value); } )*
+            { addListEndComments($ss.value, $ss.start); }
         )
     ;
 
@@ -1589,7 +1608,9 @@ subprogram_body returns [SubprogramBody value]
                 currentScope = $value;
             }
             ( sdi=subprogram_declarative_item { $value.getDeclarations().add($sdi.value); } )*
+            { addListEndComments($sdi.value, $sdi.start); }
             ( ss=sequential_statement { $value.getStatements().add($ss.value); } )*
+            { addListEndComments($ss.value, $ss.start); }
         )
     ;
 

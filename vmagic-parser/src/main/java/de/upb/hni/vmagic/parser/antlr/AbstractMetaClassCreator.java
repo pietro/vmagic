@@ -26,6 +26,7 @@ import de.upb.hni.vmagic.DeclarativeRegion;
 import de.upb.hni.vmagic.LibraryDeclarativeRegion;
 import de.upb.hni.vmagic.RootDeclarativeRegion;
 import de.upb.hni.vmagic.VhdlElement;
+import de.upb.hni.vmagic.declaration.DeclarativeItemMarker;
 import de.upb.hni.vmagic.parser.VhdlParserSettings;
 import de.upb.hni.vmagic.parser.ParseError;
 import de.upb.hni.vmagic.parser.annotation.PositionInformation;
@@ -117,12 +118,16 @@ class AbstractMetaClassCreator extends TreeParser {
     }
 
     private void addCommentAnnotation(VhdlElement element, CommonTree tree) {
-        LinkedList<String> comments = new LinkedList<String>();
+        LinkedList<String> comments = null;
 
         for (int i = tree.getTokenStartIndex() - 1; i >= 0; i--) {
             Token t = input.getTokenStream().get(i);
 
             if (t.getChannel() == VhdlAntlrLexer.CHANNEL_COMMENT) {
+                if (comments == null) {
+                    comments = new LinkedList<String>();
+                }
+
                 String text = t.getText().substring(2); //strip leading "--"
                 comments.addFirst(text);
             } else if (t.getChannel() != VhdlAntlrLexer.HIDDEN) {
@@ -130,8 +135,41 @@ class AbstractMetaClassCreator extends TreeParser {
             }
         }
 
-        if (!comments.isEmpty()) {
+        if (comments != null && !comments.isEmpty()) {
             Comments.setComments(element, comments);
+        }
+    }
+
+    protected void addListEndComments(DeclarativeItemMarker item, Tree tree) {
+        if (item instanceof VhdlElement) {
+            addListEndComments((VhdlElement) item, tree);
+        }
+    }
+
+    protected void addListEndComments(VhdlElement element, Tree tree) {
+        if (tree == null) {
+            return;
+        }
+
+        List<String> comments = null;
+
+        for (int i = tree.getTokenStopIndex() + 1; i < input.getTokenStream().size(); i++) {
+            Token t = input.getTokenStream().get(i);
+
+            if (t.getChannel() == VhdlAntlrLexer.CHANNEL_COMMENT) {
+                if (comments == null) {
+                    comments = new ArrayList<String>();
+                }
+
+                String text = t.getText().substring(2); //strip leading "--"
+                comments.add(text);
+            } else if (t.getChannel() != VhdlAntlrLexer.HIDDEN) {
+                break;
+            }
+        }
+
+        if (comments != null && !comments.isEmpty()) {
+            Comments.setCommentsAfter(element, comments);
         }
     }
 

@@ -99,8 +99,9 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
                     writer.append(' ');
                 }
             }
-            VhdlOutputHelper.handleAnnotations(element, writer);
+            VhdlOutputHelper.handleAnnotationsBefore(element, writer);
             associationElement(element);
+            VhdlOutputHelper.handleAnnotationsAfter(element, writer);
         }
         if (addLineBreaks) {
             writer.newLine();
@@ -120,7 +121,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
 
             if (objectProvider instanceof VhdlObjectGroup) {
                 VhdlObjectGroup group = (VhdlObjectGroup) objectProvider;
-                VhdlOutputHelper.handleAnnotations(group, writer);
+                VhdlOutputHelper.handleAnnotationsBefore(group, writer);
             }
 
             //TODO: check for equal types etc.

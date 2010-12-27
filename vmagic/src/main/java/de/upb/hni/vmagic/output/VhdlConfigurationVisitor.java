@@ -47,8 +47,9 @@ class VhdlConfigurationVisitor extends ConfigurationVisitor {
 
     @Override
     public void visit(ConfigurationItem item) {
-        VhdlOutputHelper.handleAnnotations(item, writer);
+        VhdlOutputHelper.handleAnnotationsBefore(item, writer);
         super.visit(item);
+        VhdlOutputHelper.handleAnnotationsAfter(item, writer);
     }
 
     @Override

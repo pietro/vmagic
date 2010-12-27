@@ -19,7 +19,6 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.output;
 
 import de.upb.hni.vmagic.VhdlElement;
@@ -30,12 +29,22 @@ import de.upb.hni.vmagic.util.Comments;
  */
 class VhdlOutputHelper {
 
-    public static void handleAnnotations(VhdlElement element, VhdlWriter writer) {
+    public static void handleAnnotationsBefore(VhdlElement element, VhdlWriter writer) {
         if (element == null) {
             return;
         }
 
         for (String comment : Comments.getComments(element)) {
+            writer.append("--").append(comment).newLine();
+        }
+    }
+
+    public static void handleAnnotationsAfter(VhdlElement element, VhdlWriter writer) {
+        if (element == null) {
+            return;
+        }
+
+        for (String comment : Comments.getCommentsAfter(element)) {
             writer.append("--").append(comment).newLine();
         }
     }

@@ -61,8 +61,9 @@ class VhdlConcurrentStatementVisitor extends ConcurrentStatementVisitor {
 
     @Override
     public void visit(ConcurrentStatement statement) {
-        VhdlOutputHelper.handleAnnotations(statement, writer);
+        VhdlOutputHelper.handleAnnotationsBefore(statement, writer);
         super.visit(statement);
+        VhdlOutputHelper.handleAnnotationsAfter(statement, writer);
     }
 
     @Override

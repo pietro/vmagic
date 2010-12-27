@@ -48,8 +48,9 @@ class VhdlLibraryUnitVisitor extends LibraryUnitVisitor {
 
     @Override
     public void visit(LibraryUnit unit) {
-        VhdlOutputHelper.handleAnnotations(unit, writer);
+        VhdlOutputHelper.handleAnnotationsBefore(unit, writer);
         super.visit(unit);
+        VhdlOutputHelper.handleAnnotationsAfter(unit, writer);
     }
 
     @Override

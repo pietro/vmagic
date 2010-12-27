@@ -19,47 +19,35 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.annotation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Comment annotation.
- * The comment annotation is used to store VHDL comments in front of a VhdlElement.
- * Each String in the list of comments represents a line comment. The strings must
- * not contain line breaks. The {@link de.upb.hni.vmagic.util.Comments} utility
- * class provides an easier interface to set and get comments.
+ * Comment annotation (after a VhdlElement).
+ * The comment annotations are used to store VHDL comments in before and after
+ * a VhdlElement. Each String in the list of comments represents a single line
+ * comment. The strings must not contain line breaks. The
+ * {@link de.upb.hni.vmagic.util.Comments} utility class provides an easier
+ * interface to set and get comments.
  *
  * @see de.upb.hni.vmagic.util.Comments
  */
-public class CommentAnnotation {
-
-    private final List<String> comments;
+public class CommentAnnotationAfter extends AbstractCommentAnnotation {
 
     /**
      * Creates a new comment annotation.
      * @param comments zero or more line comments
      */
-    public CommentAnnotation(String... comments) {
-        this.comments = Arrays.asList(comments);
+    public CommentAnnotationAfter(String... comments) {
+        super(comments);
     }
 
     /**
      * Creates a new comment annotation.
      * @param comments a list of line comments
      */
-    public CommentAnnotation(List<String> comments) {
-        this.comments = new ArrayList<String>(comments);
-    }
-
-    /**
-     * Returns a modifiable list of line comments.
-     * @return a list of line comments
-     */
-    public List<String> getComments() {
-        return comments;
+    public CommentAnnotationAfter(List<String> comments) {
+        super(comments);
     }
 }

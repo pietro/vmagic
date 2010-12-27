@@ -53,8 +53,9 @@ class VhdlExpressionVisitor extends ExpressionVisitor {
 
     @Override
     public void visit(Expression expression) {
-        VhdlOutputHelper.handleAnnotations(expression, writer);
+        VhdlOutputHelper.handleAnnotationsBefore(expression, writer);
         super.visit(expression);
+        VhdlOutputHelper.handleAnnotationsAfter(expression, writer);
     }
 
     private void appendExpression(Expression expression, int precedence) {

@@ -52,8 +52,9 @@ class VhdlTypeVisitor extends TypeVisitor {
 
     @Override
     public void visit(Type type) {
-        VhdlOutputHelper.handleAnnotations(type, writer);
+        VhdlOutputHelper.handleAnnotationsBefore(type, writer);
         super.visit(type);
+        VhdlOutputHelper.handleAnnotationsAfter(type, writer);
     }
 
     private void appendTypePrefix(Type declaration) {
