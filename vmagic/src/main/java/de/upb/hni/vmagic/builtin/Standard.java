@@ -123,10 +123,10 @@ public class Standard {
             new Subtype("POSITIVE", new RangeSubtypeIndication(INTEGER, POSITIVE_RANGE));
     /** STRING type. */
     public static final UnconstrainedArray STRING =
-            new UnconstrainedArray("STRING", POSITIVE, CHARACTER);
+            new UnconstrainedArray("STRING", CHARACTER, POSITIVE);
     /** BIT_VECTOR type. */
     public static final UnconstrainedArray BIT_VECTOR =
-            new UnconstrainedArray("BIT_VECTOR", NATURAL, BIT);
+            new UnconstrainedArray("BIT_VECTOR", BIT, NATURAL);
 
     /**
      * Creates a BIT_VECTOR(width -1 DOWNTO 0) subtype indication.
