@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -272,7 +272,7 @@ class VhdlSequentialStatementVisitor extends SequentialStatementVisitor {
     @Override
     protected void visitSignalAssignment(SignalAssignment statement) {
         appendLabel(statement);
-        output.writeTarget(statement.getTarget());
+        output.writeSignalAssignmentTarget(statement.getTarget());
         writer.append(" <= ");
 
         if (statement.getDelayMechanism() != null) {
@@ -287,7 +287,7 @@ class VhdlSequentialStatementVisitor extends SequentialStatementVisitor {
     @Override
     protected void visitVariableAssignment(VariableAssignment statement) {
         appendLabel(statement);
-        output.writeTarget(statement.getTarget());
+        output.writeVariableAssignmentTarget(statement.getTarget());
         writer.append(" := ");
         output.writeExpression(statement.getValue());
         writer.append(";").newLine();

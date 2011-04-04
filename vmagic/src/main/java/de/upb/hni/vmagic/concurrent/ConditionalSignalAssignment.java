@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -23,10 +23,9 @@
 package de.upb.hni.vmagic.concurrent;
 
 import de.upb.hni.vmagic.DelayMechanism;
-import de.upb.hni.vmagic.object.Target;
 import de.upb.hni.vmagic.WaveformElement;
 import de.upb.hni.vmagic.expression.Expression;
-import de.upb.hni.vmagic.object.Signal;
+import de.upb.hni.vmagic.object.SignalAssignmentTarget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +35,7 @@ import java.util.List;
  */
 public class ConditionalSignalAssignment extends AbstractPostponableConcurrentStatement {
 
-    private Target<Signal> target;
+    private SignalAssignmentTarget target;
     private final List<ConditionalWaveformElement> conditionalWaveforms;
     private DelayMechanism delayMechanism;
     boolean guarded;
@@ -46,7 +45,7 @@ public class ConditionalSignalAssignment extends AbstractPostponableConcurrentSt
      * @param target the target of this signal assignment
      * @param conditionalWaveforms the assigned waveform
      */
-    public ConditionalSignalAssignment(Target<Signal> target,
+    public ConditionalSignalAssignment(SignalAssignmentTarget target,
             ConditionalWaveformElement... conditionalWaveforms) {
         this(target, Arrays.asList(conditionalWaveforms));
     }
@@ -56,7 +55,7 @@ public class ConditionalSignalAssignment extends AbstractPostponableConcurrentSt
      * @param target the target of this signal assignment
      * @param conditionalWaveforms the assigned waveform
      */
-    public ConditionalSignalAssignment(Target<Signal> target,
+    public ConditionalSignalAssignment(SignalAssignmentTarget target,
             List<ConditionalWaveformElement> conditionalWaveforms) {
         this.target = target;
         this.conditionalWaveforms = new ArrayList<ConditionalWaveformElement>(conditionalWaveforms);
@@ -67,7 +66,7 @@ public class ConditionalSignalAssignment extends AbstractPostponableConcurrentSt
      * @param target the target of this signal assignment
      * @param value the assigned value
      */
-    public ConditionalSignalAssignment(Target<Signal> target, Expression value) {
+    public ConditionalSignalAssignment(SignalAssignmentTarget target, Expression value) {
         this.target = target;
         this.conditionalWaveforms = new ArrayList<ConditionalWaveformElement>();
 
@@ -79,7 +78,7 @@ public class ConditionalSignalAssignment extends AbstractPostponableConcurrentSt
      * Returns the target of this conditional signal assignment.
      * @return the target
      */
-    public Target<Signal> getTarget() {
+    public SignalAssignmentTarget getTarget() {
         return target;
     }
 
@@ -87,7 +86,7 @@ public class ConditionalSignalAssignment extends AbstractPostponableConcurrentSt
      * Sets the target of this conditional signal assignment.
      * @param target the target
      */
-    public void setTarget(Target<Signal> target) {
+    public void setTarget(SignalAssignmentTarget target) {
         this.target = target;
     }
 

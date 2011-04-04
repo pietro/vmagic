@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -22,11 +22,8 @@
 
 package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
-
 /**
- * Variable or signal assignment target.
- * @param <T> the corresponding object type
+ * Signal assignment target.
  */
-public interface Target<T extends VhdlObject> {
+public interface VariableAssignmentTarget {
 }

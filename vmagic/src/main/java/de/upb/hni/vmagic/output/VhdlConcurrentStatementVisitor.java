@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -234,7 +234,7 @@ class VhdlConcurrentStatementVisitor extends ConcurrentStatementVisitor {
             writer.append(Keyword.POSTPONED).append(' ');
         }
 
-        output.writeTarget(statement.getTarget());
+        output.writeSignalAssignmentTarget(statement.getTarget());
         writer.append(" <= ");
 
         if (statement.isGuarded()) {
@@ -356,7 +356,7 @@ class VhdlConcurrentStatementVisitor extends ConcurrentStatementVisitor {
         output.writeExpression(statement.getExpression());
         writer.append(' ').append(Keyword.SELECT);
         writer.newLine().indent();
-        output.writeTarget(statement.getTarget());
+        output.writeSignalAssignmentTarget(statement.getTarget());
         writer.append(" <=");
         if (statement.isGuarded()) {
             writer.append(' ').append(Keyword.GUARDED);

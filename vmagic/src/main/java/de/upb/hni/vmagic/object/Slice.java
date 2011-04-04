@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -29,7 +29,9 @@ import de.upb.hni.vmagic.DiscreteRange;
  * Slice of a VhdlObject.
  * @param <T> the object type
  */
-public class Slice<T extends VhdlObject> extends ForwardingVhdlObject<T> implements Target<T> {
+//TODO: check if slice is a valid signal assignment or variable assignment target
+public class Slice<T extends VhdlObject> extends ForwardingVhdlObject<T>
+        implements SignalAssignmentTarget, VariableAssignmentTarget {
 
     private final DiscreteRange range;
 

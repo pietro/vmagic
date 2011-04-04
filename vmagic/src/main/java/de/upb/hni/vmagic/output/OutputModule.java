@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -48,9 +48,10 @@ import de.upb.hni.vmagic.libraryunit.UseClause;
 import de.upb.hni.vmagic.object.ArrayElement;
 import de.upb.hni.vmagic.object.RecordElement;
 import de.upb.hni.vmagic.object.Signal;
+import de.upb.hni.vmagic.object.SignalAssignmentTarget;
 import de.upb.hni.vmagic.object.Slice;
-import de.upb.hni.vmagic.object.Target;
 import de.upb.hni.vmagic.object.Variable;
+import de.upb.hni.vmagic.object.VariableAssignmentTarget;
 import de.upb.hni.vmagic.statement.SequentialStatement;
 import de.upb.hni.vmagic.statement.SequentialStatementVisitor;
 import de.upb.hni.vmagic.type.IndexSubtypeIndication;
@@ -188,10 +189,32 @@ public abstract class OutputModule {
     }
 
     /**
-     * Writes a signal or variable assignment target.
+     * Writes a signal assignment target.
      * @param target the target
      */
-    public void writeTarget(Target target) {
+    public void writeSignalAssignmentTarget(SignalAssignmentTarget target) {
+        if (target instanceof Aggregate) {
+            writeExpression((Aggregate) target);
+        } else if (target instanceof RecordElement) {
+            writeExpression((RecordElement) target);
+        } else if (target instanceof ArrayElement) {
+            writeExpression((ArrayElement) target);
+        } else if (target instanceof Slice) {
+            writeExpression((Slice) target);
+        } else if (target instanceof Signal) {
+            writeExpression((Signal) target);
+        } else if (target == null) {
+            //ignore
+        } else {
+            throw new IllegalStateException("Unknown signal assignment target.");
+        }
+    }
+
+    /**
+     * Writes a variable assignment target.
+     * @param target the target
+     */
+    public void writeVariableAssignmentTarget(VariableAssignmentTarget target) {
         if (target instanceof Aggregate) {
             writeExpression((Aggregate) target);
         } else if (target instanceof RecordElement) {
@@ -207,7 +230,7 @@ public abstract class OutputModule {
         } else if (target == null) {
             //ignore
         } else {
-            throw new IllegalStateException("Unknown target.");
+            throw new IllegalStateException("Unknown variable assignment target.");
         }
     }
 
@@ -313,7 +336,7 @@ public abstract class OutputModule {
         } else if (element instanceof Expression) {
             writeExpression((Expression) element);
         } else if (element instanceof LibraryUnit) {
-            writeLibraryUnit((LibraryUnit)element);
+            writeLibraryUnit((LibraryUnit) element);
         } else if (element instanceof SequentialStatement) {
             writeSeqentialStatement((SequentialStatement) element);
         } else {

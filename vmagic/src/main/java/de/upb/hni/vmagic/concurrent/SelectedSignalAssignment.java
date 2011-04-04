@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -24,10 +24,9 @@ package de.upb.hni.vmagic.concurrent;
 
 import de.upb.hni.vmagic.Choice;
 import de.upb.hni.vmagic.DelayMechanism;
-import de.upb.hni.vmagic.object.Target;
 import de.upb.hni.vmagic.WaveformElement;
 import de.upb.hni.vmagic.expression.Expression;
-import de.upb.hni.vmagic.object.Signal;
+import de.upb.hni.vmagic.object.SignalAssignmentTarget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +38,7 @@ import java.util.List;
 public class SelectedSignalAssignment extends AbstractPostponableConcurrentStatement {
 
     private Expression expression;
-    private Target<Signal> target;
+    private SignalAssignmentTarget target;
     private boolean guarded;
     private DelayMechanism delayMechanism;
     private final List<SelectedWaveform> selectedWaveforms = new ArrayList<SelectedWaveform>();
@@ -49,7 +48,7 @@ public class SelectedSignalAssignment extends AbstractPostponableConcurrentState
      * @param expression the assigned expression
      * @param target the assignment target
      */
-    public SelectedSignalAssignment(Expression expression, Target<Signal> target) {
+    public SelectedSignalAssignment(Expression expression, SignalAssignmentTarget target) {
         this.expression = expression;
         this.target = target;
     }
@@ -74,7 +73,7 @@ public class SelectedSignalAssignment extends AbstractPostponableConcurrentState
      * Returns the target of this selected signal assignment.
      * @return the target
      */
-    public Target<Signal> getTarget() {
+    public SignalAssignmentTarget getTarget() {
         return target;
     }
 
@@ -82,7 +81,7 @@ public class SelectedSignalAssignment extends AbstractPostponableConcurrentState
      * Sets the target of this selected signal assignment.
      * @param target the target
      */
-    public void setTarget(Target<Signal> target) {
+    public void setTarget(SignalAssignmentTarget target) {
         this.target = target;
     }
 

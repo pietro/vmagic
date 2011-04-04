@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -34,7 +34,9 @@ import java.util.List;
  * Array element of a VhdlObject.
  * @param <T> the object type
  */
-public class ArrayElement<T extends VhdlObject> extends ForwardingVhdlObject<T> implements Target<T> {
+//TODO: check if array element is a valid signal assignment or variable assignment target
+public class ArrayElement<T extends VhdlObject> extends ForwardingVhdlObject<T>
+        implements SignalAssignmentTarget, VariableAssignmentTarget {
 
     private final List<Expression> indices;
 

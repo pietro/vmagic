@@ -1685,26 +1685,14 @@ suffix
     |   ALL
     ;
 
-target_signal returns [Target<Signal> value]
+target_signal returns [SignalAssignmentTarget value]
     :   signal=name { $value = $signal.value.toSignalTarget(currentScope); }
-    |   aggregate
-        {
-            //TODO: find type safe alternative
-            @SuppressWarnings("unchecked")
-            Target<Signal> tmp = $aggregate.value;
-            $value = tmp;
-        }
+    |   aggregate { $value = $aggregate.value; }
     ;
 
-target_variable returns [Target<Variable> value]
+target_variable returns [VariableAssignmentTarget value]
     :   variable=name { $value = $variable.value.toVariableTarget(currentScope); }
-    |   aggregate
-        {
-            //TODO: find type safe alternative
-            @SuppressWarnings("unchecked")
-            Target<Variable> tmp = $aggregate.value;
-            $value = tmp;
-        }
+    |   aggregate { $value = $aggregate.value; }
     ;
 
 term returns [Expression value]

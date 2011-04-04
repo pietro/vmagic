@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -24,8 +24,9 @@ package de.upb.hni.vmagic.expression;
 
 import de.upb.hni.vmagic.Choice;
 import de.upb.hni.vmagic.Choices;
-import de.upb.hni.vmagic.object.Target;
 import de.upb.hni.vmagic.VhdlElement;
+import de.upb.hni.vmagic.object.SignalAssignmentTarget;
+import de.upb.hni.vmagic.object.VariableAssignmentTarget;
 import de.upb.hni.vmagic.type.SubtypeIndication;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +35,9 @@ import java.util.List;
 /**
  * Aggregate.
  */
-public class Aggregate extends Primary<Aggregate> implements Target {
+//TODO: check if aggregate is a valid signal assignment or variable assignment target
+public class Aggregate extends Primary<Aggregate>
+        implements SignalAssignmentTarget, VariableAssignmentTarget {
 
     private final List<ElementAssociation> associations = new ArrayList<ElementAssociation>();
 
@@ -104,6 +107,7 @@ public class Aggregate extends Primary<Aggregate> implements Target {
         return createAssociation(expression, Arrays.asList(choices));
     }
 
+    @Override
     public SubtypeIndication getType() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

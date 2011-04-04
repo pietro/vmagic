@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010, 2011 University of Paderborn
+ * Copyright 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -22,33 +22,8 @@
 
 package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
-
 /**
- * Record element.
- * @param <T> the object type
+ * Signal assignment target.
  */
-//TODO: check if record element is a valid signal assignment or variable assignment target
-public class RecordElement<T extends VhdlObject> extends ForwardingVhdlObject<T>
-        implements SignalAssignmentTarget, VariableAssignmentTarget {
-
-    private final String element;
-
-    /**
-     * Creates a record element.
-     * @param base the base object
-     * @param element the identifier of the element
-     */
-    public RecordElement(T base, String element) {
-        super(base);
-        this.element = element;
-    }
-
-    /**
-     * Returns the identifier of the record element.
-     * @return the identifier
-     */
-    public String getElement() {
-        return element;
-    }
+public interface SignalAssignmentTarget {
 }

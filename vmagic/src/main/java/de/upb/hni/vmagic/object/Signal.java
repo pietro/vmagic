@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Signal.
  */
-public class Signal extends DefaultVhdlObject<Signal> implements Target<Signal> {
+public class Signal extends DefaultVhdlObject<Signal> implements SignalAssignmentTarget {
 
     private Kind kind;
     private Expression defaultValue;
@@ -118,10 +118,12 @@ public class Signal extends DefaultVhdlObject<Signal> implements Target<Signal> 
         this.defaultValue = defaultValue;
     }
 
+    @Override
     public List<Signal> getVhdlObjects() {
         return Collections.singletonList(this);
     }
 
+    @Override
     public ObjectClass getObjectClass() {
         return ObjectClass.SIGNAL;
     }
@@ -145,10 +147,12 @@ public class Signal extends DefaultVhdlObject<Signal> implements Target<Signal> 
             upper = text.toUpperCase();
         }
 
+        @Override
         public String getLowerCase() {
             return lower;
         }
 
+        @Override
         public String getUpperCase() {
             return upper;
         }

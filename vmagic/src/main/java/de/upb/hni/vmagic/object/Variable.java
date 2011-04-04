@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Variable.
  */
-public class Variable extends DefaultVhdlObject<Variable> implements Target<Variable> {
+public class Variable extends DefaultVhdlObject<Variable> implements VariableAssignmentTarget {
 
     private Expression defaultValue;
     private boolean shared;
@@ -98,10 +98,12 @@ public class Variable extends DefaultVhdlObject<Variable> implements Target<Vari
         super.setMode(mode);
     }
 
+    @Override
     public List<Variable> getVhdlObjects() {
         return Collections.singletonList(this);
     }
 
+    @Override
     public ObjectClass getObjectClass() {
         return ObjectClass.VARIABLE;
     }

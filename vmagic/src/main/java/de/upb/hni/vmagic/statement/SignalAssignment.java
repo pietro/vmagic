@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -23,10 +23,9 @@
 package de.upb.hni.vmagic.statement;
 
 import de.upb.hni.vmagic.DelayMechanism;
-import de.upb.hni.vmagic.object.Target;
 import de.upb.hni.vmagic.WaveformElement;
 import de.upb.hni.vmagic.expression.Expression;
-import de.upb.hni.vmagic.object.Signal;
+import de.upb.hni.vmagic.object.SignalAssignmentTarget;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +41,7 @@ import java.util.List;
  */
 public class SignalAssignment extends SequentialStatement {
 
-    private Target<Signal> target;
+    private SignalAssignmentTarget target;
     private final List<WaveformElement> waveform = new ArrayList<WaveformElement>();
     private DelayMechanism delayMechanism;
 
@@ -51,7 +50,7 @@ public class SignalAssignment extends SequentialStatement {
      * @param target the signal assignement target
      * @param waveformElements the waveform
      */
-    public SignalAssignment(Target<Signal> target, WaveformElement... waveformElements) {
+    public SignalAssignment(SignalAssignmentTarget target, WaveformElement... waveformElements) {
         this(target, Arrays.asList(waveformElements));
     }
 
@@ -60,7 +59,7 @@ public class SignalAssignment extends SequentialStatement {
      * @param target the signal assignement target
      * @param waveformElements the waveform
      */
-    public SignalAssignment(Target<Signal> target, List<WaveformElement> waveformElements) {
+    public SignalAssignment(SignalAssignmentTarget target, List<WaveformElement> waveformElements) {
         this.target = target;
         this.waveform.addAll(waveformElements);
     }
@@ -70,7 +69,7 @@ public class SignalAssignment extends SequentialStatement {
      * @param target the signal assignment target
      * @param value the assigned value
      */
-    public SignalAssignment(Target<Signal> target, Expression value) {
+    public SignalAssignment(SignalAssignmentTarget target, Expression value) {
         this.target = target;
         this.waveform.add(new WaveformElement(value));
     }
@@ -79,7 +78,7 @@ public class SignalAssignment extends SequentialStatement {
      * Returns the signal assignment target.
      * @return the target
      */
-    public Target<Signal> getTarget() {
+    public SignalAssignmentTarget getTarget() {
         return target;
     }
 
@@ -87,7 +86,7 @@ public class SignalAssignment extends SequentialStatement {
      * Sets the signal assignement target.
      * @param target the target
      */
-    public void setTarget(Target<Signal> target) {
+    public void setTarget(SignalAssignmentTarget target) {
         this.target = target;
     }
 

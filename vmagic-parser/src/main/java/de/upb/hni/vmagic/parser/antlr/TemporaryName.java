@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC parser.
  *
@@ -19,7 +19,6 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.parser.antlr;
 
 import de.upb.hni.vmagic.AssociationElement;
@@ -31,7 +30,6 @@ import de.upb.hni.vmagic.RangeProvider;
 import de.upb.hni.vmagic.Signature;
 import de.upb.hni.vmagic.SubtypeDiscreteRange;
 import de.upb.hni.vmagic.builtin.Standard;
-import de.upb.hni.vmagic.object.Target;
 import de.upb.hni.vmagic.declaration.Attribute;
 import de.upb.hni.vmagic.declaration.Component;
 import de.upb.hni.vmagic.declaration.Function;
@@ -48,6 +46,8 @@ import de.upb.hni.vmagic.object.AttributeExpression;
 import de.upb.hni.vmagic.object.Signal;
 import de.upb.hni.vmagic.object.Variable;
 import de.upb.hni.vmagic.expression.VhdlObject;
+import de.upb.hni.vmagic.object.SignalAssignmentTarget;
+import de.upb.hni.vmagic.object.VariableAssignmentTarget;
 import de.upb.hni.vmagic.parser.ParseError.Type;
 import de.upb.hni.vmagic.type.EnumerationType;
 import de.upb.hni.vmagic.type.IndexSubtypeIndication;
@@ -279,66 +279,48 @@ class TemporaryName {
         return obj;
     }
 
-    public <T extends VhdlObject<T>> Target<T> toTarget(DeclarativeRegion scope, Class<T> clazz) {
-        VhdlObject<T> obj = resolve(scope, clazz);
-        if (obj == null) {
-            return null;
-        }
+    public SignalAssignmentTarget toSignalTarget(DeclarativeRegion scope) {
+        VhdlObject<Signal> obj = resolve(scope, Signal.class);
 
-        obj = addTargetParts(obj, true);
-
-        if (obj instanceof Target) {
-            //TODO: find typesafe solution
-            @SuppressWarnings("unchecked")
-            Target<T> tmp = (Target<T>) obj;
-            return tmp;
+        if (obj != null) {
+            obj = addTargetParts(obj, true);
         } else {
-            return null;
+            String identifier = toIdentifier();
+            mcc.resolveError(tree, Type.UNKNOWN_SIGNAL_ASSIGNMENT_TARGET, identifier);
+
+            if (mcc.getSettings().isCreateDummyObjects()) {
+                Signal dummy = new Signal(identifier, null);
+                obj = addTargetParts(dummy, false);
+            }
         }
+
+        if (obj instanceof SignalAssignmentTarget) {
+            return (SignalAssignmentTarget) obj;
+        }
+
+        return null;
     }
 
-    public Target<Signal> toSignalTarget(DeclarativeRegion scope) {
-        Target<Signal> target = toTarget(scope, Signal.class);
-        if (target != null) {
-            return target;
-        }
+    public VariableAssignmentTarget toVariableTarget(DeclarativeRegion scope) {
+        VhdlObject<Variable> obj = resolve(scope, Variable.class);
 
-        String identifier = toIdentifier();
-        mcc.resolveError(tree, Type.UNKNOWN_SIGNAL_ASSIGNMENT_TARGET, identifier);
-
-        if (mcc.getSettings().isCreateDummyObjects()) {
-            Signal dummy = new Signal(identifier, null);
-            VhdlObject<Signal> signal = addTargetParts(dummy, false);
-
-            //TODO: find typesafe solution
-            @SuppressWarnings("unchecked")
-            Target<Signal> tmp = (Target<Signal>) signal;
-            return tmp;
+        if (obj != null) {
+            obj = addTargetParts(obj, true);
         } else {
-            return null;
+            String identifier = toIdentifier();
+            mcc.resolveError(tree, Type.UNKNOWN_VARIABLE_ASSIGNMENT_TARGET, identifier);
+
+            if (mcc.getSettings().isCreateDummyObjects()) {
+                Variable dummy = new Variable(identifier, null);
+                obj = addTargetParts(dummy, false);
+            }
         }
-    }
 
-    public Target<Variable> toVariableTarget(DeclarativeRegion scope) {
-        Target<Variable> target = toTarget(scope, Variable.class);
-        if (target != null) {
-            return target;
+        if (obj instanceof VariableAssignmentTarget) {
+            return (VariableAssignmentTarget) obj;
         }
 
-        String identifier = toIdentifier();
-        mcc.resolveError(tree, Type.UNKNOWN_VARIABLE_ASSIGNMENT_TARGET, identifier);
-
-        if (mcc.getSettings().isCreateDummyObjects()) {
-            Variable dummy = new Variable(identifier, null);
-            VhdlObject<Variable> variable = addTargetParts(dummy, false);
-
-            //TODO: find typesafe solution
-            @SuppressWarnings("unchecked")
-            Target<Variable> tmp = (Target<Variable>) variable;
-            return tmp;
-        } else {
-            return null;
-        }
+        return null;
     }
 
     public String toUseClauseName(DeclarativeRegion scope) {
@@ -727,6 +709,7 @@ class TemporaryName {
             currentIndex = 0;
         }
 
+        @Override
         public Iterator<Part> iterator() {
             return iterator;
         }
@@ -737,10 +720,12 @@ class TemporaryName {
 
         private class ContinuousIterator implements Iterator<Part> {
 
+            @Override
             public boolean hasNext() {
                 return remainingParts() > 0;
             }
 
+            @Override
             public Part next() {
                 if (hasNext()) {
                     return parts.get(currentIndex++);
@@ -749,6 +734,7 @@ class TemporaryName {
                 }
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }

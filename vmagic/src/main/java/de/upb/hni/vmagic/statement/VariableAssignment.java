@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -22,9 +22,8 @@
 
 package de.upb.hni.vmagic.statement;
 
-import de.upb.hni.vmagic.object.Target;
-import de.upb.hni.vmagic.object.Variable;
 import de.upb.hni.vmagic.expression.Expression;
+import de.upb.hni.vmagic.object.VariableAssignmentTarget;
 
 /**
  * Variable assignment.
@@ -37,7 +36,7 @@ import de.upb.hni.vmagic.expression.Expression;
  */
 public class VariableAssignment extends SequentialStatement {
 
-    private Target<Variable> target;
+    private VariableAssignmentTarget target;
     private Expression value;
 
     /**
@@ -45,7 +44,7 @@ public class VariableAssignment extends SequentialStatement {
      * @param target the variable assignment target
      * @param value the assigned value
      */
-    public VariableAssignment(Target<Variable> target, Expression value) {
+    public VariableAssignment(VariableAssignmentTarget target, Expression value) {
         this.target = target;
         this.value = value;
     }
@@ -54,7 +53,7 @@ public class VariableAssignment extends SequentialStatement {
      * Returns the variable assignement target.
      * @return the target
      */
-    public Target<Variable> getTarget() {
+    public VariableAssignmentTarget getTarget() {
         return target;
     }
 
@@ -62,7 +61,7 @@ public class VariableAssignment extends SequentialStatement {
      * Sets the variable assignment target.
      * @param target the target
      */
-    public void setTarget(Target<Variable> target) {
+    public void setTarget(VariableAssignmentTarget target) {
         this.target = target;
     }
 
