@@ -19,7 +19,6 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
-
 package de.upb.hni.vmagic.output;
 
 import de.upb.hni.vmagic.Annotations;
@@ -108,7 +107,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
         }
     }
 
-    private void writeInterfaceList(List<? extends VhdlObjectProvider<?>> list, boolean isPort) {
+    private void writeInterfaceList(List<? extends VhdlObjectProvider<?>> list, boolean isGeneric) {
         writer.beginAlign();
 
         boolean first = true;
@@ -139,16 +138,12 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
 
             writer.append(" : ");
 
-            if (isPort) {
-                if (format != null) {
-                    if (format.isUseMode() || (obj0.getMode() != VhdlObject.Mode.IN)) {
-                        writer.append(obj0.getMode()).append(' ');
-                    }
-                } else {
+            if (format != null) {
+                if (format.isUseMode() || (obj0.getMode() != VhdlObject.Mode.IN)) {
                     writer.append(obj0.getMode()).append(' ');
                 }
             } else {
-                if (format != null && format.isUseMode()) {
+                if (!isGeneric || obj0.getMode() != VhdlObject.Mode.IN) {
                     writer.append(obj0.getMode()).append(' ');
                 }
             }
@@ -169,7 +164,7 @@ class VhdlMiscellaneousElementOutput implements MiscellaneousElementOutput {
     @Override
     public void port(List<VhdlObjectProvider<Signal>> port) {
         writer.append(Keyword.PORT).append(" (").newLine().indent();
-        writeInterfaceList(port, true);
+        writeInterfaceList(port, false);
         writer.dedent().append(");").newLine();
     }
 
