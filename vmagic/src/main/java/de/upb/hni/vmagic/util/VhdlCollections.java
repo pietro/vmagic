@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -28,9 +28,9 @@ import de.upb.hni.vmagic.NamedEntity;
 import de.upb.hni.vmagic.VhdlElement;
 import de.upb.hni.vmagic.declaration.DeclarativeItemMarker;
 import de.upb.hni.vmagic.declaration.ObjectDeclaration;
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.literal.EnumerationLiteral;
 import de.upb.hni.vmagic.literal.PhysicalLiteral;
+import de.upb.hni.vmagic.object.VhdlObject;
 import de.upb.hni.vmagic.object.VhdlObjectProvider;
 import de.upb.hni.vmagic.type.EnumerationType;
 import de.upb.hni.vmagic.type.PhysicalType;
@@ -193,10 +193,11 @@ public class VhdlCollections {
             super(new ArrayList<E>(list));
         }
 
+        @Override
         public Object resolve(String identifier) {
             for (E declaration : this) {
                 if (declaration instanceof EnumerationType) {
-                    EnumerationType type = (EnumerationType)declaration;
+                    EnumerationType type = (EnumerationType) declaration;
                     if (identifier.equalsIgnoreCase(type.getIdentifier())) {
                         return type;
                     }
@@ -208,7 +209,7 @@ public class VhdlCollections {
                         }
                     }
                 } else if (declaration instanceof PhysicalType) {
-                    PhysicalType type = (PhysicalType)declaration;
+                    PhysicalType type = (PhysicalType) declaration;
                     if (identifier.equalsIgnoreCase(type.getIdentifier())) {
                         return type;
                     }
@@ -256,6 +257,7 @@ public class VhdlCollections {
             super(new ArrayList<E>(list));
         }
 
+        @Override
         public VhdlObject resolve(String identifier) {
             for (E provider : this) {
                 for (VhdlObject object : provider.getVhdlObjects()) {
@@ -283,6 +285,7 @@ public class VhdlCollections {
             super(ParentSetList.<E>create(parent, list));
         }
 
+        @Override
         public E resolve(String identifier) {
             for (E element : this) {
                 if (identifier.equalsIgnoreCase(element.getLabel())) {
@@ -307,6 +310,7 @@ public class VhdlCollections {
             super(ParentSetList.<E>create(parent, list));
         }
 
+        @Override
         public E resolve(String identifier) {
             for (E element : this) {
                 if (element instanceof NamedEntity) {

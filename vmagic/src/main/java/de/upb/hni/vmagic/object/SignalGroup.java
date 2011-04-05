@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -55,10 +55,12 @@ public class SignalGroup extends VhdlObjectGroup<Signal> {
      * Returns the signals in this group.
      * @return a modifiable list of signals
      */
+    @Override
     public List<Signal> getElements() {
         return signals;
     }
 
+    @Override
     public List<Signal> getVhdlObjects() {
         return Collections.unmodifiableList(signals);
     }

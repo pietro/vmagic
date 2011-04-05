@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Function call.
  */
-public class FunctionCall extends Primary<FunctionCall> {
+public class FunctionCall extends Name<FunctionCall> {
 
     private Function function;
     private final List<AssociationElement> parameters = new ArrayList<AssociationElement>();

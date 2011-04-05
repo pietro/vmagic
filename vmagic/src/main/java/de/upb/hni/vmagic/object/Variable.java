@@ -23,7 +23,6 @@
 package de.upb.hni.vmagic.object;
 
 import de.upb.hni.vmagic.expression.Expression;
-import de.upb.hni.vmagic.expression.VhdlObject.Mode;
 import de.upb.hni.vmagic.type.SubtypeIndication;
 import java.util.Collections;
 import java.util.List;

@@ -22,27 +22,37 @@
 
 package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.DiscreteRange;
+import de.upb.hni.vmagic.expression.Name;
+import de.upb.hni.vmagic.type.SubtypeIndication;
 
 /**
  * Slice of a VhdlObject.
  * @param <T> the object type
  */
 //TODO: check if slice is a valid signal assignment or variable assignment target
-public class Slice<T extends VhdlObject> extends ForwardingVhdlObject<T>
+public class Slice<T extends Name> extends Name<T>
         implements SignalAssignmentTarget, VariableAssignmentTarget {
 
+    private final T prefix;
     private final DiscreteRange range;
 
     /**
      * Creates a slice.
-     * @param base the sliced object
+     * @param prefix the slice prefix
      * @param range the range
      */
-    public Slice(T base, DiscreteRange range) {
-        super(base);
+    public Slice(T prefix, DiscreteRange range) {
+        this.prefix = prefix;
         this.range = range;
+    }
+
+    /**
+     * Returns the prefix of this slice.
+     * @return the prefix
+     */
+    public T getPrefix() {
+        return prefix;
     }
 
     /**
@@ -51,5 +61,11 @@ public class Slice<T extends VhdlObject> extends ForwardingVhdlObject<T>
      */
     public DiscreteRange getRange() {
         return range;
+    }
+
+    @Override
+    public SubtypeIndication getType() {
+        //TODO: implement correctly
+        return prefix.getType();
     }
 }

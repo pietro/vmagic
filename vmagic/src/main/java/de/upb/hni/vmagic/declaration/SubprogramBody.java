@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -24,8 +24,8 @@ package de.upb.hni.vmagic.declaration;
 
 import de.upb.hni.vmagic.DeclarativeRegion;
 import de.upb.hni.vmagic.Scope;
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.Scopes;
+import de.upb.hni.vmagic.object.VhdlObject;
 import de.upb.hni.vmagic.object.VhdlObjectProvider;
 import de.upb.hni.vmagic.statement.SequentialStatement;
 import de.upb.hni.vmagic.util.ParentSetList;
@@ -82,14 +82,17 @@ public abstract class SubprogramBody extends DeclarativeItem
         this.parameters.addAll(declaration.getParameters());
     }
 
+    @Override
     public String getIdentifier() {
         return identifier;
     }
 
+    @Override
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
+    @Override
     public List<VhdlObjectProvider<? extends VhdlObject>> getParameters() {
         return parameters;
     }
@@ -110,6 +113,7 @@ public abstract class SubprogramBody extends DeclarativeItem
         return statements;
     }
 
+    @Override
     public Scope getScope() {
         return scope;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -116,9 +116,9 @@ public class ExpressionVisitor {
     }
 
     /**
-     * Visits a VHDL object.
-     * @param object the object
+     * Visits a name.
+     * @param name the name
      */
-    protected void visitVhdlObject(VhdlObject object) {
+    protected void visitName(Name object) {
     }
 }

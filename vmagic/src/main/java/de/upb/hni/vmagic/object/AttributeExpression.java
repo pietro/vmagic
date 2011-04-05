@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -22,40 +22,50 @@
 
 package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.declaration.Attribute;
 import de.upb.hni.vmagic.expression.Expression;
+import de.upb.hni.vmagic.expression.Name;
+import de.upb.hni.vmagic.type.SubtypeIndication;
 
 /**
  * Attribute expression.
  * @param <T> the object type
  */
-public class AttributeExpression<T extends VhdlObject> extends ForwardingVhdlObject<T> {
+public class AttributeExpression<T extends Name> extends Name<T> {
 
+    private final T prefix;
     private final Attribute attribute;
     private final Expression parameter;
 
     /**
      * Creates an attribute expression.
-     * @param base the base object
+     * @param prefix the prefix of this attribute expression
      * @param attribute the attribute
      */
-    public AttributeExpression(T base, Attribute attribute) {
-        super(base);
+    public AttributeExpression(T prefix, Attribute attribute) {
+        this.prefix = prefix;
         this.attribute = attribute;
         this.parameter = null;
     }
 
     /**
      * Creates an attribute expression with a parameter.
-     * @param base the base object
+     * @param prefix the prefix of this attribute expression
      * @param attribute the attribute
      * @param parameter the parameter
      */
-    public AttributeExpression(T base, Attribute attribute, Expression parameter) {
-        super(base);
+    public AttributeExpression(T prefix, Attribute attribute, Expression parameter) {
+        this.prefix = prefix;
         this.attribute = attribute;
         this.parameter = parameter;
+    }
+
+    /**
+     * Returns the prefix of this attribute expression.
+     * @return the prefix
+     */
+    public T getPrefix() {
+        return prefix;
     }
 
     /**
@@ -72,5 +82,11 @@ public class AttributeExpression<T extends VhdlObject> extends ForwardingVhdlObj
      */
     public Expression getParameter() {
         return parameter;
+    }
+
+    @Override
+    public SubtypeIndication getType() {
+        //TODO: implement corrently
+        return prefix.getType();
     }
 }

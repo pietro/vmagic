@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -22,7 +22,7 @@
 
 package de.upb.hni.vmagic.declaration;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
+import de.upb.hni.vmagic.object.VhdlObject;
 import de.upb.hni.vmagic.object.VhdlObjectProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,19 +58,22 @@ public abstract class SubprogramDeclaration extends DeclarativeItem
         this.identifier = identifier;
         for (VhdlObjectProvider provider : parameters) {
             VhdlObjectProvider<? extends VhdlObject> p =
-                    (VhdlObjectProvider<? extends VhdlObject>)provider;
+                    (VhdlObjectProvider<? extends VhdlObject>) provider;
             this.parameters.add(p);
         }
     }
 
+    @Override
     public String getIdentifier() {
         return identifier;
     }
 
+    @Override
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
+    @Override
     public List<VhdlObjectProvider<? extends VhdlObject>> getParameters() {
         return parameters;
     }

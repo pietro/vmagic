@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -30,13 +30,13 @@ import de.upb.hni.vmagic.expression.ExpressionKind;
 import de.upb.hni.vmagic.expression.ExpressionVisitor;
 import de.upb.hni.vmagic.expression.FunctionCall;
 import de.upb.hni.vmagic.expression.Literal;
+import de.upb.hni.vmagic.expression.Name;
 import de.upb.hni.vmagic.expression.Parentheses;
 import de.upb.hni.vmagic.expression.QualifiedExpression;
 import de.upb.hni.vmagic.expression.QualifiedExpressionAllocator;
 import de.upb.hni.vmagic.expression.SubtypeIndicationAllocator;
 import de.upb.hni.vmagic.expression.TypeConversion;
 import de.upb.hni.vmagic.expression.UnaryExpression;
-import de.upb.hni.vmagic.expression.VhdlObject;
 
 /**
  * Expression output visitor.
@@ -174,7 +174,7 @@ class VhdlExpressionVisitor extends ExpressionVisitor {
     }
 
     @Override
-    protected void visitVhdlObject(VhdlObject object) {
-        VhdlObjectOutputHelper.object(object, writer, output);
+    protected void visitName(Name name) {
+        VhdlObjectOutputHelper.name(name, writer, output);
     }
 }

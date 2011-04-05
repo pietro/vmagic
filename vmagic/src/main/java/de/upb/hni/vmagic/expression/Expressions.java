@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -193,7 +193,7 @@ public class Expressions {
                 return false;
             }
 
-            return ae.getBase().equals(clock);
+            return ae.getPrefix().equals(clock);
         } else if (expression instanceof Not) {
             Not not = (Not) expression;
             if (not.getExpression() instanceof AttributeExpression) {
@@ -202,7 +202,7 @@ public class Expressions {
                     return false;
                 }
 
-                return ae.getBase().equals(clock);
+                return ae.getPrefix().equals(clock);
             }
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -54,10 +54,12 @@ public class FileGroup extends VhdlObjectGroup<FileObject> {
      * Returns the files in this group.
      * @return a modifiable list of files
      */
+    @Override
     public List<FileObject> getElements() {
         return files;
     }
 
+    @Override
     public List<FileObject> getVhdlObjects() {
         return Collections.unmodifiableList(files);
     }

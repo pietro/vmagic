@@ -35,6 +35,7 @@ import de.upb.hni.vmagic.declaration.Component;
 import de.upb.hni.vmagic.declaration.Function;
 import de.upb.hni.vmagic.expression.Expression;
 import de.upb.hni.vmagic.expression.FunctionCall;
+import de.upb.hni.vmagic.expression.Name;
 import de.upb.hni.vmagic.expression.Primary;
 import de.upb.hni.vmagic.expression.TypeConversion;
 import de.upb.hni.vmagic.libraryunit.Configuration;
@@ -45,9 +46,9 @@ import de.upb.hni.vmagic.literal.StringLiteral;
 import de.upb.hni.vmagic.object.AttributeExpression;
 import de.upb.hni.vmagic.object.Signal;
 import de.upb.hni.vmagic.object.Variable;
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.object.SignalAssignmentTarget;
 import de.upb.hni.vmagic.object.VariableAssignmentTarget;
+import de.upb.hni.vmagic.object.VhdlObject;
 import de.upb.hni.vmagic.parser.ParseError.Type;
 import de.upb.hni.vmagic.type.EnumerationType;
 import de.upb.hni.vmagic.type.IndexSubtypeIndication;
@@ -246,7 +247,7 @@ class TemporaryName {
         return toSelectedName();
     }
 
-    private <T extends VhdlObject<T>> VhdlObject<T> addTargetParts(VhdlObject<T> obj, boolean strict) {
+    private <T extends Name<T>> Name<T> addTargetParts(Name<T> obj, boolean strict) {
         for (Part part : parts) {
             switch (part.getType()) {
                 case ASSOCIATION:
@@ -280,7 +281,7 @@ class TemporaryName {
     }
 
     public SignalAssignmentTarget toSignalTarget(DeclarativeRegion scope) {
-        VhdlObject<Signal> obj = resolve(scope, Signal.class);
+        Name<Signal> obj = resolve(scope, Signal.class);
 
         if (obj != null) {
             obj = addTargetParts(obj, true);
@@ -302,7 +303,7 @@ class TemporaryName {
     }
 
     public VariableAssignmentTarget toVariableTarget(DeclarativeRegion scope) {
-        VhdlObject<Variable> obj = resolve(scope, Variable.class);
+        Name<Variable> obj = resolve(scope, Variable.class);
 
         if (obj != null) {
             obj = addTargetParts(obj, true);
@@ -327,7 +328,7 @@ class TemporaryName {
         return toSelectedName();
     }
 
-    private Primary addPrimaryParts(VhdlObject<?> obj) {
+    private Primary addPrimaryParts(Name<?> obj) {
         for (Part part : parts) {
             switch (part.getType()) {
                 case ASSOCIATION:
@@ -353,7 +354,7 @@ class TemporaryName {
                 case ATTRIBUTE:
                     //TODO: remove dummy attribute
                     Attribute attrb = new Attribute(part.getIdentifier(), null);
-                    obj = new AttributeExpression<VhdlObject>(obj, attrb, part.getExpression());
+                    obj = new AttributeExpression<Name>(obj, attrb, part.getExpression());
             }
         }
         return obj;
@@ -415,9 +416,8 @@ class TemporaryName {
             if (parts.remainingParts() == 0) {
                 return call;
             } else {
-                Part part = parts.iterator().next();
-
                 if (!function.getParameters().isEmpty()) {
+                    Part part = parts.iterator().next();
                     switch (part.getType()) {
                         case ASSOCIATION:
                             call.getParameters().addAll(part.getAssociationList());
@@ -428,12 +428,10 @@ class TemporaryName {
                                 call.getParameters().add(new AssociationElement(index));
                             }
                             break;
-
-                        default:
-                            return null;
                     }
                 }
-                return call;
+                
+                return addPrimaryParts(call);
             }
         }
 

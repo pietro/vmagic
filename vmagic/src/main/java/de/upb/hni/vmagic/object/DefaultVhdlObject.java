@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -22,13 +22,12 @@
 
 package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.type.SubtypeIndication;
 
 /**
  * Default VHDL object.
  */
-abstract class DefaultVhdlObject<T extends VhdlObject> extends AbstractVhdlObject<T> {
+abstract class DefaultVhdlObject<T extends VhdlObject> extends VhdlObject<T> {
 
     private String identifier;
     private SubtypeIndication type;
@@ -44,6 +43,7 @@ abstract class DefaultVhdlObject<T extends VhdlObject> extends AbstractVhdlObjec
      * Returns the identifier of this object.
      * @return the identifier
      */
+    @Override
     public String getIdentifier() {
         return identifier;
     }
@@ -52,6 +52,7 @@ abstract class DefaultVhdlObject<T extends VhdlObject> extends AbstractVhdlObjec
      * Sets the identifier of this object.
      * @param identifier the identifier
      */
+    @Override
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
@@ -60,6 +61,7 @@ abstract class DefaultVhdlObject<T extends VhdlObject> extends AbstractVhdlObjec
      * Returns the type of this object.
      * @return the type
      */
+    @Override
     public SubtypeIndication getType() {
         return type;
     }
@@ -68,6 +70,7 @@ abstract class DefaultVhdlObject<T extends VhdlObject> extends AbstractVhdlObjec
      * Sets the type of this object.
      * @param type the type
      */
+    @Override
     public void setType(SubtypeIndication type) {
         this.type = type;
     }
@@ -76,6 +79,7 @@ abstract class DefaultVhdlObject<T extends VhdlObject> extends AbstractVhdlObjec
      * Returns the mode of this vhdl object.
      * @return the mode
      */
+    @Override
     public Mode getMode() {
         return mode;
     }
@@ -84,6 +88,7 @@ abstract class DefaultVhdlObject<T extends VhdlObject> extends AbstractVhdlObjec
      * Sets the mode of this vhdl object.
      * @param mode the mode
      */
+    @Override
     public void setMode(Mode mode) {
         if (mode == Mode.NONE) {
             throw new IllegalArgumentException("Setting the mode to NONE is not allowed");

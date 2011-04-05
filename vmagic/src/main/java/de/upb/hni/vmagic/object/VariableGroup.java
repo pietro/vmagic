@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -54,10 +54,12 @@ public class VariableGroup extends VhdlObjectGroup<Variable> {
      * Returns the variables in this group.
      * @return a modifiable list of variables
      */
+    @Override
     public List<Variable> getElements() {
         return variables;
     }
 
+    @Override
     public List<Variable> getVhdlObjects() {
         return Collections.unmodifiableList(variables);
     }

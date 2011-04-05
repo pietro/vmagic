@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -23,7 +23,8 @@
 package de.upb.hni.vmagic.output;
 
 import de.upb.hni.vmagic.expression.Expression;
-import de.upb.hni.vmagic.expression.VhdlObject;
+import de.upb.hni.vmagic.expression.FunctionCall;
+import de.upb.hni.vmagic.expression.Name;
 import de.upb.hni.vmagic.object.ArrayElement;
 import de.upb.hni.vmagic.object.AttributeExpression;
 import de.upb.hni.vmagic.object.Constant;
@@ -32,6 +33,7 @@ import de.upb.hni.vmagic.object.RecordElement;
 import de.upb.hni.vmagic.object.Signal;
 import de.upb.hni.vmagic.object.Slice;
 import de.upb.hni.vmagic.object.Variable;
+import de.upb.hni.vmagic.object.VhdlObject;
 
 /**
  * VHDL output helper class.
@@ -41,20 +43,21 @@ class VhdlObjectOutputHelper {
     private VhdlObjectOutputHelper() {
     }
 
-    public static void object(VhdlObject object, VhdlWriter writer, OutputModule output) {
-        if (object instanceof RecordElement) {
-            recordElement((RecordElement) object, writer, output);
-        } else if (object instanceof ArrayElement) {
-            arrayElement((ArrayElement) object, writer, output);
-        } else if (object instanceof Slice) {
-            slice((Slice) object, writer, output);
-        } else if (object instanceof AttributeExpression) {
-            attributeExpression((AttributeExpression) object, writer, output);
-        } else {
-            writer.appendIdentifier(object);
+    public static void name(Name name, VhdlWriter writer, OutputModule output) {
+        if (name instanceof RecordElement) {
+            recordElement((RecordElement) name, writer, output);
+        } else if (name instanceof ArrayElement) {
+            arrayElement((ArrayElement) name, writer, output);
+        } else if (name instanceof Slice) {
+            slice((Slice) name, writer, output);
+        } else if (name instanceof AttributeExpression) {
+            attributeExpression((AttributeExpression) name, writer, output);
+        } else if (name instanceof VhdlObject) {
+            writer.appendIdentifier((VhdlObject) name);
+        } else if (name instanceof FunctionCall) {
+            output.getExpressionVisitor().visit((FunctionCall) name);
         }
     }
-
 
     public static void interfaceSuffix(VhdlObject object, VhdlWriter writer, OutputModule output) {
         if (object instanceof Signal) {
@@ -108,14 +111,14 @@ class VhdlObjectOutputHelper {
     }
 
     public static void slice(Slice slice, VhdlWriter writer, OutputModule output) {
-        output.writeExpression(slice.getBase());
+        output.writeExpression(slice.getPrefix());
         writer.append('(');
         output.writeDiscreteRange(slice.getRange());
         writer.append(')');
     }
 
     public static void arrayElement(ArrayElement<?> arrayElement, VhdlWriter writer, OutputModule output) {
-        output.writeExpression(arrayElement.getBase());
+        output.writeExpression(arrayElement.getPrefix());
         writer.append('(');
         boolean first = true;
         for (Expression index : arrayElement.getIndices()) {
@@ -130,13 +133,13 @@ class VhdlObjectOutputHelper {
     }
 
     public static void recordElement(RecordElement recordElement, VhdlWriter writer, OutputModule output) {
-        output.writeExpression(recordElement.getBase());
+        output.writeExpression(recordElement.getPrefix());
         writer.append('.');
         writer.append(recordElement.getElement());
     }
 
     public static void attributeExpression(AttributeExpression expression, VhdlWriter writer, OutputModule output) {
-        output.writeExpression(expression.getBase());
+        output.writeExpression(expression.getPrefix());
         writer.append('\'');
         writer.appendIdentifier(expression.getAttribute());
         if (expression.getParameter() != null) {

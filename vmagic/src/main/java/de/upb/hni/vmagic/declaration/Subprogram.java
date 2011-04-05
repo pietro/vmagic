@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -23,7 +23,7 @@
 package de.upb.hni.vmagic.declaration;
 
 import de.upb.hni.vmagic.NamedEntity;
-import de.upb.hni.vmagic.expression.VhdlObject;
+import de.upb.hni.vmagic.object.VhdlObject;
 import de.upb.hni.vmagic.object.VhdlObjectProvider;
 import java.util.List;
 
@@ -36,6 +36,7 @@ interface Subprogram extends NamedEntity {
      * Returns the subprogram's identifier.
      * @return the identifier
      */
+    @Override
     public String getIdentifier();
 
     /**

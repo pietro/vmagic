@@ -22,26 +22,36 @@
 
 package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
+import de.upb.hni.vmagic.expression.Name;
+import de.upb.hni.vmagic.type.SubtypeIndication;
 
 /**
  * Record element.
  * @param <T> the object type
  */
 //TODO: check if record element is a valid signal assignment or variable assignment target
-public class RecordElement<T extends VhdlObject> extends ForwardingVhdlObject<T>
+public class RecordElement<T extends Name> extends Name<T>
         implements SignalAssignmentTarget, VariableAssignmentTarget {
 
+    private final T prefix;
     private final String element;
 
     /**
      * Creates a record element.
-     * @param base the base object
+     * @param prefix the prefix of this record element
      * @param element the identifier of the element
      */
-    public RecordElement(T base, String element) {
-        super(base);
+    public RecordElement(T prefix, String element) {
+        this.prefix = prefix;
         this.element = element;
+    }
+
+    /**
+     * Returns the prefix of this record element.
+     * @return the preifx
+     */
+    public T getPrefix() {
+        return prefix;
     }
 
     /**
@@ -50,5 +60,11 @@ public class RecordElement<T extends VhdlObject> extends ForwardingVhdlObject<T>
      */
     public String getElement() {
         return element;
+    }
+
+    @Override
+    public SubtypeIndication getType() {
+        //TODO: implement correctly
+        return prefix.getType();
     }
 }

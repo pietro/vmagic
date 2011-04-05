@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -20,30 +20,24 @@
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
 
-package de.upb.hni.vmagic.expression;
+package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.DiscreteRange;
 import de.upb.hni.vmagic.NamedEntity;
-import de.upb.hni.vmagic.declaration.Attribute;
-import de.upb.hni.vmagic.object.ArrayElement;
-import de.upb.hni.vmagic.object.AttributeExpression;
-import de.upb.hni.vmagic.object.RecordElement;
-import de.upb.hni.vmagic.object.Slice;
+import de.upb.hni.vmagic.expression.Name;
 import de.upb.hni.vmagic.output.OutputEnum;
 import de.upb.hni.vmagic.type.SubtypeIndication;
-import java.util.List;
 
 /**
- * Vhdl object.
- * @param <T> the object type
+ * VHDL object.
  */
-public abstract class VhdlObject<T extends VhdlObject> extends Primary<VhdlObject>
-        implements NamedEntity {
+public abstract class VhdlObject<T extends VhdlObject> extends Name<T>
+        implements VhdlObjectProvider<T>, NamedEntity {
 
     /**
      * Returns the identifier of this object.
      * @return the identifier
      */
+    @Override
     public abstract String getIdentifier();
 
     /**
@@ -51,12 +45,6 @@ public abstract class VhdlObject<T extends VhdlObject> extends Primary<VhdlObjec
      * @param identifier the identifier
      */
     public abstract void setIdentifier(String identifier);
-
-    /**
-     * Returns the type of this object.
-     * @return the type
-     */
-    public abstract SubtypeIndication getType();
 
     /**
      * Sets the type of this object.
@@ -77,77 +65,10 @@ public abstract class VhdlObject<T extends VhdlObject> extends Primary<VhdlObjec
     public abstract void setMode(Mode mode);
 
     /**
-     * Returns a slice of this vhdl object.
-     * @param range the slice range.
-     * @return the slice
-     */
-    public abstract Slice<T> getSlice(DiscreteRange range);
-
-    /**
-     * Returns an array element of this object.
-     * @param index the index of the array element
-     * @return the array element
-     */
-    public abstract ArrayElement<T> getArrayElement(Expression index);
-
-    /**
-     * Returns an array element of this object.
-     * @param index the index of the array element
-     * @return the array element
-     */
-    public abstract ArrayElement<T> getArrayElement(int index);
-
-    /**
-     * Returns an array element of this object.
-     * @param indices the indices of the array element
-     * @return the array element
-     */
-    public abstract ArrayElement<T> getArrayElement(List<Expression> indices);
-
-    /**
-     * Returns an array element of this object.
-     * @param indices the indices of the array element
-     * @return the array element
-     */
-    public abstract ArrayElement<T> getArrayElement(Expression... indices);
-
-    /**
-     * Returns a record element of this object.
-     * @param element the identifier of the record element
-     * @return the record element
-     */
-    public abstract RecordElement<T> getRecordElement(String element);
-
-    /**
-     * Returns a attribute expression of this object.
-     * @param attribute the attribute
-     * @return the record element
-     */
-    public abstract AttributeExpression<T> getAttributeExpression(Attribute attribute);
-
-    /**
-     * Returns a attribute expression of this object.
-     * @param attribute the attribute
-     * @param parameter the parameter
-     * @return the record element
-     */
-    public abstract AttributeExpression<T> getAttributeExpression(Attribute attribute, Expression parameter);
-
-    /**
      * Returns the type of this VhdlObject.
      * @return the object class
      */
     public abstract ObjectClass getObjectClass();
-
-    @Override
-    void accept(ExpressionVisitor visitor) {
-        visitor.visitVhdlObject(this);
-    }
-
-    @Override
-    public VhdlObject copy() {
-        return this;
-    }
 
     /**
      * Object class describes the type of VhdlObject.
@@ -170,10 +91,12 @@ public abstract class VhdlObject<T extends VhdlObject> extends Primary<VhdlObjec
             upper = text.toUpperCase();
         }
 
+        @Override
         public String getLowerCase() {
             return lower;
         }
 
+        @Override
         public String getUpperCase() {
             return upper;
         }
@@ -197,6 +120,7 @@ public abstract class VhdlObject<T extends VhdlObject> extends Primary<VhdlObjec
         /** Linkage. */
         LINKAGE;
 
+        @Override
         public String getLowerCase() {
             if (this == NONE) {
                 return "";
@@ -204,6 +128,7 @@ public abstract class VhdlObject<T extends VhdlObject> extends Primary<VhdlObjec
             return this.toString().toLowerCase();
         }
 
+        @Override
         public String getUpperCase() {
             if (this == NONE) {
                 return "";

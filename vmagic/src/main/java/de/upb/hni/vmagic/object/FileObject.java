@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -23,7 +23,6 @@
 package de.upb.hni.vmagic.object;
 
 import de.upb.hni.vmagic.expression.Expression;
-import de.upb.hni.vmagic.expression.VhdlObject.Mode;
 import de.upb.hni.vmagic.type.SubtypeIndication;
 import java.util.Collections;
 import java.util.List;
@@ -101,10 +100,12 @@ public class FileObject extends DefaultVhdlObject<FileObject> {
         this.openKind = openKind;
     }
 
+    @Override
     public List<FileObject> getVhdlObjects() {
         return Collections.singletonList(this);
     }
 
+    @Override
     public ObjectClass getObjectClass() {
         return ObjectClass.FILE;
     }

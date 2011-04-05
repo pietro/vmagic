@@ -22,9 +22,10 @@
 
 package de.upb.hni.vmagic.object;
 
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.expression.Expression;
+import de.upb.hni.vmagic.expression.Name;
 import de.upb.hni.vmagic.literal.DecimalLiteral;
+import de.upb.hni.vmagic.type.SubtypeIndication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,47 +36,48 @@ import java.util.List;
  * @param <T> the object type
  */
 //TODO: check if array element is a valid signal assignment or variable assignment target
-public class ArrayElement<T extends VhdlObject> extends ForwardingVhdlObject<T>
+public class ArrayElement<T extends Name> extends Name<T>
         implements SignalAssignmentTarget, VariableAssignmentTarget {
 
+    private final T prefix;
     private final List<Expression> indices;
 
     /**
      * Creates an array element.
-     * @param base the base object
+     * @param prefix the prefix of this array element
      * @param index the array index
      */
-    public ArrayElement(T base, Expression index) {
-        super(base);
+    public ArrayElement(T prefix, Expression index) {
+        this.prefix = prefix;
         this.indices = Collections.singletonList(index);
     }
 
     /**
      * Creates an array element with an integer index.
-     * @param base the base object
+     * @param prefix the prefix of this array element
      * @param index the array index
      */
-    public ArrayElement(T base, int index) {
-        this(base, new DecimalLiteral(index));
+    public ArrayElement(T prefix, int index) {
+        this(prefix, new DecimalLiteral(index));
     }
 
     /**
      * Creates an array element.
-     * @param base the base object
+     * @param prefix the prefix of this array element
      * @param indices the array indices
      */
-    public ArrayElement(T base, List<Expression> indices) {
-        super(base);
+    public ArrayElement(T prefix, List<Expression> indices) {
+        this.prefix = prefix;
         this.indices = new ArrayList<Expression>(indices);
     }
 
     /**
      * Creates an array element.
-     * @param base the base object
+     * @param prefix the prefix of this array element
      * @param indices the array indices
      */
-    public ArrayElement(T base, Expression... indices) {
-        this(base, Arrays.asList(indices));
+    public ArrayElement(T prefix, Expression... indices) {
+        this(prefix, Arrays.asList(indices));
     }
 
     /**
@@ -84,5 +86,19 @@ public class ArrayElement<T extends VhdlObject> extends ForwardingVhdlObject<T>
      */
     public List<Expression> getIndices() {
         return Collections.unmodifiableList(indices);
+    }
+
+    /**
+     * Returns the prefix of this array element.
+     * @return the prefix
+     */
+    public T getPrefix() {
+        return prefix;
+    }
+
+    @Override
+    public SubtypeIndication getType() {
+        //TODO: implement corrently
+        return prefix.getType();
     }
 }

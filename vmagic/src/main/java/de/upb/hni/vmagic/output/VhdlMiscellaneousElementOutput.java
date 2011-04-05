@@ -1,5 +1,5 @@
 /*
- * Copyright 2009, 2010 University of Paderborn
+ * Copyright 2009, 2010, 2011 University of Paderborn
  *
  * This file is part of vMAGIC.
  *
@@ -19,6 +19,7 @@
  * Authors: Ralf Fuest <rfuest@users.sourceforge.net>
  *          Christopher Pohl <cpohl@users.sourceforge.net>
  */
+
 package de.upb.hni.vmagic.output;
 
 import de.upb.hni.vmagic.Annotations;
@@ -33,9 +34,9 @@ import de.upb.hni.vmagic.SubtypeDiscreteRange;
 import de.upb.hni.vmagic.WaveformElement;
 import de.upb.hni.vmagic.annotation.InterfaceDeclarationFormat;
 import de.upb.hni.vmagic.declaration.Subtype;
-import de.upb.hni.vmagic.expression.VhdlObject;
 import de.upb.hni.vmagic.object.Constant;
 import de.upb.hni.vmagic.object.Signal;
+import de.upb.hni.vmagic.object.VhdlObject;
 import de.upb.hni.vmagic.object.VhdlObjectGroup;
 import de.upb.hni.vmagic.object.VhdlObjectProvider;
 import de.upb.hni.vmagic.type.IndexSubtypeIndication;
